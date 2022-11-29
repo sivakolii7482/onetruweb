@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col-6 offset-3">
+                    <div>
+                        <button class="btn btn-outline-primary mb-2 float-end" data-bs-toggle="modal" data-bs-target="#addModal">Add</button>     
+                    </div>
+                    <table class="table table-hover table-bordered text-secondary" border="3">
+                        <thead>
+                            <tr class="bg-primary text-white text-center">
+                                <th>S.No</th>
+                                <th>Name</th>
+                                <th>email</th> 
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="items">
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Biodata</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="mb-3">
+                      <label for="seriesNumber" class="col-form-label">S.No:</label>
+                      <input type="text" class="form-control" id="seriesNumber" name="seriesNumber">
+                    </div>
+                    <div class="mb-3">
+                        <label for="userName" class="col-form-label">Name :</label>
+                        <input type="text" class="form-control" id="userName" name="userName">
+                    </div>
+                    <div class="mb-3">
+                       <label for="emailId" class="col-form-label">email :</label>
+                       <input type="text" class="form-control" id="emailId" name="emailId">
+                    </div>
+
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="addId">Add+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+<!--editing modal-->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="editModalLabel">Update Biodata</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="mb-3">
+                      <label for="editNumber" class="col-form-label">S.No:</label>
+                      <input type="text" class="form-control" id="editNumber" name="editNumber">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editName" class="col-form-label">Name :</label>
+                        <input type="text" class="form-control" id="editName" name="editName">
+                    </div>
+                    <div class="mb-3">
+                      <label for="editEmailId" class="col-form-label">Name :</label>
+                      <input type="text" class="form-control" id="editEmailId" name="editEmailId">
+                   </div>
+
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="editId" onclick="updateBtn()">Update</button>
+                </div>
+              </div>
+            </div>
+         </div>
+
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $(document).ready(function(){
+          localStorageData();
+          $("#addId").click(function(){
+            addItem();
+          })
+
+          $( function() {
+           $( document ).tooltip({
+           })
+           });
+          
+        }) 
+        
+        function localStorageData(){
+          $("#items").html('');
+          keys=Object.keys(localStorage);
+          keys=keys.sort();
+          for (i=0; i<keys.length;i++){
+            key=keys[i];
+            item=localStorage.getItem(key);
+            myItem=JSON.parse(item);
+            name=myItem[0];
+            email=myItem[1]; //extrn
+            $("#items").append("<tr><td id='id_"+key+"'>"+key+"</td> <td id='name_"+key+"'>"+name+"</td> <td id='email_"+key+"'>"+email+"</td> <td class='text-center'><a href='javascript:void(0)' onclick=editData("+
+               key+") title='edit'><i class='fa fa-pencil-square btn btn-outline-info' aria-hidden='true'> </i></a>  <a href='javascript:void(0)' onclick=deleteData("+key+") title='delete'><i class='fa fa-trash btn btn-outline-danger' style='color: red'> </i></a></td></tr>");
+            //<td id='email_"+key+"'>"+email+"</td>
+          }
+        }
+
+        function editData(param){
+          id=$("#id_"+param).text();
+          name=$("#name_"+param).text();
+          email=$("#email_"+param).text();
+          $("#editNumber").val(id);
+          $("#editName").val(name);
+          $("#editEmailId").val(email);
+          $("#editModal").modal("show");
+        }
+
+        function updateBtn(){
+          id=$("#editNumber").val();
+          userName=$("#editName").val();
+          emailId=$("#editEmailId").val();
+          data=[userName,emailId];
+          localStorage.setItem(id,JSON.stringify(data));
+
+          $("#editModal").modal("hide");
+          $("#editNumber").val('');
+          $("#editName").val('');
+
+          swal("This is updated!", {
+          buttons: false,
+          timer: 2000,
+          });
+          localStorageData();
+
+        }
+        function deleteData(param){
+          swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              localStorage.removeItem(param);
+              localStorageData();
+              swal("Poof! Your file has been deleted!", {
+                icon: "success",
+                timer: 2000,
+              });
+            } else {
+              swal("Your file is safe!",{
+                timer: 2000,
+              });
+            }
+      
+          });
+
+        }
+
+        function addItem(){
+          id=$("#seriesNumber").val();
+          sno=parseInt(id);
+          userName=$("#userName").val();
+          emailId=$("#emailId").val();     //extrn
+          data=[userName,emailId];
+          localStorage.setItem(id,JSON.stringify(data)); //extrn
+
+          $("#addModal").modal('hide');
+          $("#seriesNumber").val(sno+1);
+          $("#userName").val('');
+          $("#emailId").val('');    //extrn
+
+          swal("This is added!", {
+          buttons: false,
+          icon: "success",
+          timer: 2000,
+          });
+          localStorageData();
+        }
+            
+            
+    </script>
+</html>
