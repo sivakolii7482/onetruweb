@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+    <title>calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" >
+<style>
+    
+</style>
+</head>
+<body>
+    <div class="container px-5 my-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-5">
+          <div class="card bg-light border-0 rounded-3 shadow-lg">
+            <div class="card-body p-4">
+              <div class="text-center">
+                <div class="h1 fw-light">Calculator</div>
+              </div>
+    
+            <form>
+                <div class="mb-3">
+                  <label for="number1">number 1</label><br>
+                  <input id="number1" type="text" name="number1" onkeyup="validnumber(this)"/>
+                </div>
+
+                <div class="mb-3">
+                  <label for="number2">number 2</label><br>
+                  <input id="number2" type="text" name="number2" onkeyup="validnumber(this)" />
+                </div>
+    
+                <div>
+                  <button class="btn btn-primary" type="button" onclick="add()"> + </button>
+                  <button class="btn btn-secondary" type="button" onclick="sub()"> - </button>
+                  <button class="btn btn-success" type="button" onclick="div()"> / </button>
+                  <button class="btn btn-info" type="button" onclick="mul()"> x </button>
+                </div>
+                <div class="alert alert-primary mt-2" role="alert" id="resultbox">please enter number</div>
+            </form>    
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+<script>
+    function validnumber(el){
+      number=el.value;
+      if (isNaN(number)){
+        document.getElementById("resultbox").classList.remove("alert-primary");
+        document.getElementById("resultbox").classList.add("alert-danger");
+        
+      }
+    }
+    function add() {  
+        number1js=document.getElementById("number1");
+        number2js=document.getElementById("number2");
+        resultboxjs=document.getElementById("resultbox");
+        n1=number1js.value;
+        n2=number2js.value;
+        if (n1=="" && n2==""){
+          resultboxjs.innerHTML="please enter values";
+          resultboxjs.classList.remove("alert-primary");
+          resultboxjs.classList.add("alert-danger");
+          number1js.style.borderColor="red";
+          number2js.style.borderColor="red";
+          
+        }
+        else if (n1!="" && n2==""){
+          resultboxjs.innerHTML="please enter values";
+          resultboxjs.classList.remove("alert-primary");
+          resultboxjs.classList.add("alert-danger");
+          number2js.style.borderColor="red";
+          number1js.removeAttribute("style");
+        }
+        else if (n1=="" && n2!=""){
+          resultboxjs.innerHTML="please enter values";
+          resultboxjs.classList.remove("alert-primary");
+          resultboxjs.classList.add("alert-danger");
+          number1js.style.borderColor="red";
+          number2js.removeAttribute("style");
+        }
+        else {
+          result=parseInt(n1)+parseInt(n2); 
+          resultboxjs.innerHTML="sum is "+result;
+          number1js.removeAttribute("style");
+          number2js.removeAttribute("style");
+          resultboxjs.classList.remove("alert-danger");
+          resultboxjs.classList.add("alert-primary");
+        }
+    }
+    function sub() {
+        n1=document.getElementById("number1").value;
+        n2=document.getElementById("number2").value;
+        result=parseInt(n1) - parseInt(n2);
+        document.getElementById("resultbox").innerHTML=result;
+    }
+    function div() {
+        n1=document.getElementById("number1").value;
+        n2=document.getElementById("number2").value;
+        result=parseInt(n1) / parseInt(n2);
+        document.getElementById("resultbox").innerHTML=result;
+    }
+    function mul() {
+        n1=document.getElementById("number1").value;
+        n2=document.getElementById("number2").value;
+        result=parseInt(n1) * parseInt(n2);
+        document.getElementById("resultbox").innerHTML=result;
+    }
+</script>
+</html>
