@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-6 offset-3">
+                <ul class="list-group" id="items">
+                    <li class="list-group-item active" aria-current="true">Product Items</li>                    
+                </ul>
+                <div id="btnId"></div>
+            </div>
+            <!-- Button trigger modal 
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productId">
+                Launch static backdrop modal
+            </button>
+            -->
+            <div class="modal fade" id="productId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="productTitle">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row g-0">
+                              <div class="col-md-4">
+                                <img id="productImage" src="" class="img-fluid rounded-start" alt="...">
+                              </div>
+                              <div class="col-md-8">
+                                <div class="card-body">
+                                  <h5 class="card-title" id="productPrice">Card title</h5>
+                                  <p class="card-text" id="productDescription">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary bg-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function(){
+        //$("#items").html('<img src="https://th.bing.com/th/id/R.5b1fe33d1621848930b98b0783ed56c9?rik=wRyiKekmJSoa9Q&riu=http%3a%2f%2fgifimage.net%2fwp-content%2fuploads%2f2017%2f02%2fLoading-GIF-Image-14.gif&ehk=TB%2bK%2fRRl4r%2f2egaI2ENfMPXLoG6qL5ULgLgP859fsZA%3d&risl=&pid=ImgRaw&r=0"/>');
+        $.ajax({
+            url:'https://fakestoreapi.com/products',
+            dataType:'json',
+            success: function(data){
+               // $("#items").html('');
+                for (i=0; i<data.length;i++){
+                    $("#items").append('<li class="list-group-item" data-title="'+data[i].title+'" data-productid="'+data[i].id+'" data-price="'+data[i].price+'" data-image="'+data[i].image+'" data-description="'+data[i].description+'" id="p'+data[i].id+'" onclick="loadProduct('+data[i].id+');">'+data[i].title+'</li>');
+                }
+            }
+        })        
+    })
+  function loadProduct(id){
+    pid="#p"+id;
+    title=$(pid).attr('data-title');
+    img=$(pid).attr('data-image');
+    price=$(pid).attr('data-price');
+    description=$(pid).attr('data-description');
+
+    $("#productTitle").html(title);
+    $("#productImage").attr("src",img);
+    $("#productPrice").html('$'+price);
+    $("#productDescription").html(description);
+    $("#productId").modal('show');
+    console.log(pid);
+  }  
+</script>
+</html>  
